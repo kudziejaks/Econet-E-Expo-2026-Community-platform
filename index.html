@@ -1,88 +1,128 @@
-<nav style="background:#0c1f3f; padding: 15px; text-align:center;">
-    <a href="index.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">Home</a>
-    <a href="speakers.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">Speakers</a>
-    <a href="schedule.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">Schedule</a>
-    <a href="community.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">Community</a>
-    <a href="attendance.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">RSVP</a>
-    <a href="admin.html" style="margin:0 15px; color:#00ffff; text-decoration:none; font-weight:bold;">Admin</a>
-</nav>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Econet e-Novate Expo 2025 - Signup</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  body { margin:0; font-family: 'Roboto', sans-serif; color:#fff; 
-         background: url('https://images.unsplash.com/photo-1611078486433-8ffbf585748e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080') center/cover no-repeat; }
-  header { text-align:center; padding:50px 20px; }
-  h1 { font-size:2rem; color:#00ffff; margin-bottom:20px; }
-  form { background: rgba(0,0,0,0.7); padding:20px; max-width:400px; margin:auto; border-radius:10px; }
-  input, select { width:100%; padding:10px; margin:10px 0; border-radius:5px; border:none; }
-  button { padding:10px 20px; border:none; border-radius:5px; background:#00ffff; color:#000; font-weight:700; cursor:pointer; width:100%; margin-top:10px; }
-  #signupMessage { text-align:center; color:#0f0; margin-top:10px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Econet e-Novate Expo 2025 - Signup</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin:0;
+            font-family: 'Roboto', sans-serif;
+            color:#fff;
+            background: url('https://images.unsplash.com/photo-1611078846343-8fbfb5B5748e?crop=entropy&cs=tinysrgb&fit=max&w=1080') center/cover no-repeat;
+        }
+        nav {
+            background:#0c13f3;
+            padding:15px;
+            text-align:center;
+        }
+        nav a {
+            margin:0 15px;
+            color:#fff;
+            text-decoration:none;
+            font-weight:bold;
+        }
+        header {
+            text-align:center;
+            padding:50px 20px;
+        }
+        h1 {
+            font-size:2rem;
+            color:#fff;
+            margin-bottom:20px;
+        }
+        form {
+            background: rgba(0,0,0,0.7);
+            padding:20px;
+            max-width:400px;
+            margin:auto;
+            border-radius:10px;
+        }
+        input, select {
+            width:100%;
+            padding:10px;
+            margin:10px 0;
+            border-radius:5px;
+            border:none;
+        }
+        button {
+            padding:10px 20px;
+            border:none;
+            border-radius:5px;
+            background:#fff;
+            color:#000;
+            font-weight:700;
+            cursor:pointer;
+            width:100%;
+            margin-top:10px;
+        }
+        #signupMessage {
+            text-align:center;
+            color:#0f0;
+            margin-top:10px;
+        }
+    </style>
 </head>
+
 <body>
 
+<!-- 🔵 NAVIGATION BAR (correct position) -->
+<nav>
+    <a href="index.html">Home</a>
+    <a href="speakers.html">Speakers</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="community.html">Community</a>
+    <a href="attendance.html">RSVP</a>
+    <a href="admin.html">Admin</a>
+</nav>
+
+<!-- 🔵 PAGE HEADER -->
 <header>
-  <h1>Welcome to Econet e-Novate Expo 2025</h1>
-  <p>Step 1: Sign up to join the Expo</p>
+    <h1>Expo Signup</h1>
 </header>
 
+<!-- 🔵 SIGNUP FORM -->
 <form id="signupForm">
-  <input type="text" name="name" placeholder="Full Name" required>
-  <input type="email" name="email" placeholder="Email" required>
-  <input type="tel" name="phone" placeholder="Phone" required>
-  <select name="ageGroup" required>
-    <option value="">Select Age Group</option>
-    <option value="Under 18">Under 18</option>
-    <option value="18-24">18-24</option>
-    <option value="25-35">25-35</option>
-    <option value="35+">35+</option>
-  </select>
-  <select name="occupation" required>
-    <option value="">Select Occupation</option>
-    <option value="Student">Student</option>
-    <option value="Innovator">Innovator</option>
-    <option value="Professional">Professional</option>
-    <option value="Other">Other</option>
-  </select>
-  <button type="submit">Next → Select Attendance</button>
-</form>
-<p id="signupMessage"></p>
+    <input type="text" id="name" placeholder="Your Full Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
 
+    <select id="category" required>
+        <option value="">Choose Category</option>
+        <option value="Student">Student</option>
+        <option value="Parent">Parent</option>
+        <option value="Teacher">Teacher</option>
+    </select>
+
+    <button type="submit">Submit</button>
+
+    <p id="signupMessage"></p>
+</form>
+
+<!-- 🔵 EMAILJS SCRIPT -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 <script>
-  emailjs.init("yOwYpcXjeLqxfopJb");
-  let rsvpData = {}; // Save info to pass to next page
+    emailjs.init("yOwYpcXjeLqxfopJb");
 
-  document.getElementById('signupForm').addEventListener('submit', function(e){
-      e.preventDefault();
-      const form = e.target;
-      rsvpData.name = form.name.value;
-      rsvpData.email = form.email.value;
-      rsvpData.phone = form.phone.value;
-      rsvpData.ageGroup = form.ageGroup.value;
-      rsvpData.occupation = form.occupation.value;
+    document.getElementById("signupForm").addEventListener("submit", function(e) {
+        e.preventDefault();
 
-      // Save to localStorage
-      localStorage.setItem('rsvpData', JSON.stringify(rsvpData));
+        const params = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            category: document.getElementById("category").value
+        };
 
-      // EmailJS confirmation
-      emailjs.send("service_n6q8s1o","_f4jj28d",{
-        from_name: rsvpData.name,
-        to_email: rsvpData.email,
-        message: `Dear ${rsvpData.name}, your RSVP for Econet e-Novate Expo 2025 is received.`
-      }).then(() => {
-        document.getElementById('signupMessage').innerText = "RSVP submitted! Redirecting...";
-        setTimeout(()=>{ window.location.href="attendance.html"; }, 1500);
-      }).catch(err => {
-        document.getElementById('signupMessage').innerText = "Error sending email. Please try again.";
-        console.error(err);
-      });
-  });
+        emailjs.send("service_n6q8s1o", "_f4jj28d", params)
+            .then(function() {
+                document.getElementById("signupMessage").textContent = "Signup successful!";
+            })
+            .catch(function(error) {
+                document.getElementById("signupMessage").textContent = "Error. Please try again.";
+            });
+    });
 </script>
 
 </body>
