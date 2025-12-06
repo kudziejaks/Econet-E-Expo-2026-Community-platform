@@ -3,47 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Econet e-Novate Expo 2025 - Schedule</title>
+<title>Schedule - Econet e-Novate Expo 2025</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  body { margin:0; font-family: 'Roboto', sans-serif; color:#fff;
-         background: url('https://images.unsplash.com/photo-1518770660439-4636190af475?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080') center/cover no-repeat; }
-  header { text-align:center; padding:50px 20px; }
-  h1 { font-size:2rem; color:#00ffff; margin-bottom:20px; }
-  .dashboard { display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
-  .card { background: rgba(0,0,0,0.7); padding:20px; border-radius:10px; width:250px; text-align:center; }
-  button { padding:10px 20px; border:none; border-radius:5px; background:#00ffff; color:#000; font-weight:700; cursor:pointer; margin-top:20px; }
+body { margin:0; font-family:'Roboto',sans-serif; color:#fff; background:url('https://images.unsplash.com/photo-1581094288330-07e9a202e1e0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080') center/cover no-repeat; }
+header { background: rgba(0,0,0,0.6); padding:20px; text-align:center; }
+header h1 { margin:0; color:#00ffff; }
+nav { display:flex; justify-content:center; gap:20px; margin-top:10px; }
+nav a { color:#fff; text-decoration:none; font-weight:700; }
+section { padding:50px; text-align:center; }
+.card { background: rgba(0,0,0,0.7); display:inline-block; width:250px; padding:20px; margin:15px; border-radius:10px; vertical-align:top; }
+.card h4 { color:#00ffff; margin-bottom:5px; }
 </style>
 </head>
 <body>
 
 <header>
-  <h1>Schedule / Program</h1>
-  <p>Step 4: Plan your attendance</p>
+<h1>Expo Schedule / Program</h1>
+<nav>
+    <a href="index.html">Home</a>
+    <a href="signup.html">Join Expo</a>
+    <a href="speakers.html">Speakers</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="exhibitors.html">Exhibitors</a>
+    <a href="community.html">Community</a>
+    <a href="admin.html">Admin</a>
+</nav>
 </header>
 
-<div class="dashboard">
-  <div class="card">
-    <h4>Day 1: 8 Dec</h4>
-    <p>9:30 AM - Opening Ceremony</p>
-    <p>10:00 AM - AI: From hype to impact</p>
-    <p>11:30 AM - VR for Learning & Work</p>
-  </div>
-  <div class="card">
-    <h4>Day 2: 9 Dec</h4>
-    <p>9:30 AM - AR Workshop</p>
-    <p>11:00 AM - 5G Technologies Talk</p>
-  </div>
-  <div class="card">
-    <h4>Day 3: 10 Dec</h4>
-    <p>9:30 AM - Entrepreneurship in Tech</p>
-    <p>11:00 AM - Closing Ceremony</p>
-  </div>
+<section>
+<div class="card">
+<h4>Day 1: 8 Dec</h4>
+<p>9:30 AM - Opening Ceremony</p>
+<p>10:00 AM - AI: From Hype to Impact</p>
+<p>11:30 AM - VR for Learning & Work</p>
 </div>
+<div class="card">
+<h4>Day 2: 9 Dec</h4>
+<p>9:30 AM - AR Workshop</p>
+<p>11:00 AM - 5G Technologies Talk</p>
+</div>
+<div class="card">
+<h4>Day 3: 10 Dec</h4>
+<p>9:30 AM - Entrepreneurship in Tech</p>
+<p>11:00 AM - Closing Ceremony</p>
+</div>
+<p>Redirecting to Exhibitors in 5 seconds...</p>
+</section>
 
-<div style="text-align:center;">
-  <button onclick="window.location.href='community.html'">Next → Community</button>
-</div>
+<script>
+setTimeout(()=>{ window.location.href="exhibitors.html"; },5000);
+</script>
 
 </body>
 </html>
