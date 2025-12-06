@@ -80,13 +80,13 @@
         <h2>Join Econet E-Novate Expo 2025</h2>
         <form id="signup-form">
             <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required placeholder="Kudzaishe Jakarta">
+            <input type="text" id="name" name="name" required placeholder="">
 
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required placeholder="example@gmail.com">
 
             <label for="phone">Phone</label>
-            <input type="text" id="phone" name="phone" required placeholder="+263 77 123 4567">
+            <input type="text" id="phone" name="phone" required placeholder="">
 
             <label for="age">Age Group</label>
             <select id="age" name="age" required>
@@ -121,7 +121,8 @@
                 return;
             }
 
-            emailjs.send('service_n6q8s1o', 'template_f4jj28d', {
+            emailjs.send('service_n6q8s1o', 'template_f4jj28d',emailjs.init("yOwYpcXjeLqxfopJb"); // Your Public Key
+ {
                 name: form.name.value,
                 email: emailValue,
                 phone: form.phone.value,
