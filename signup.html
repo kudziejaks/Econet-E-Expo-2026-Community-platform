@@ -7,23 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
 <style>
-body { margin:0; font-family:'Roboto',sans-serif; color:#fff; background:url('https://images.unsplash.com/photo-1581090700220-58372c6e0eb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080') center/cover no-repeat; }
+body { margin:0; font-family:'Roboto',sans-serif; color:#fff; 
+background:url('https://images.unsplash.com/photo-1581091215368-4ec06a22d3f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080') center/cover no-repeat; background-size:cover;}
 header { background: rgba(0,0,0,0.6); padding:20px; text-align:center; }
 header h1 { margin:0; color:#00ffff; text-shadow:0 0 10px #00ffff; }
 nav { display:flex; justify-content:center; gap:15px; flex-wrap:wrap; margin-top:10px; }
 nav a { color:#00ffff; text-decoration:none; font-weight:700; padding:5px 10px; border-radius:5px; transition:0.3s; }
 nav a:hover { background:#00ffff; color:#000; }
-section { max-width:600px; margin:50px auto; background: rgba(0,0,0,0.7); padding:30px; border-radius:10px; }
-h2 { text-align:center; color:#00ffff; margin-bottom:20px; }
-input, select, textarea { width:100%; padding:10px; margin:8px 0; border-radius:5px; border:none; }
-button { width:100%; padding:12px; margin-top:15px; background:#00ffff; color:#000; font-weight:700; border:none; border-radius:5px; cursor:pointer; transition:0.3s; }
-button:hover { background:#00ffff; box-shadow:0 0 15px #00ffff; }
-#signupMessage { margin-top:15px; color:#0f0; text-align:center; }
+section { padding:50px; max-width:600px; margin:auto; background: rgba(0,0,0,0.7); border-radius:10px; }
+input, select, button { width:100%; padding:10px; margin:5px 0; border-radius:5px; border:none; font-weight:700; }
+button { background:#00ffff; color:#000; cursor:pointer; }
 </style>
 </head>
 <body>
 <header>
-<h1>Join Econet e-Novate Expo 2025</h1>
+<h1>Join Econet e-Novate Expo</h1>
 <nav>
 <a href="index.html">Home</a>
 <a href="signup.html">Join Expo</a>
@@ -36,7 +34,6 @@ button:hover { background:#00ffff; box-shadow:0 0 15px #00ffff; }
 </header>
 
 <section>
-<h2>RSVP / Sign Up</h2>
 <form id="signupForm">
 <input type="text" name="name" placeholder="Full Name" required>
 <input type="email" name="email" placeholder="Email" required>
@@ -75,32 +72,36 @@ button:hover { background:#00ffff; box-shadow:0 0 15px #00ffff; }
 <script>
 emailjs.init("yOwYpcXjeLqxfopJb");
 
-document.getElementById('signupForm').addEventListener('submit', function(e){
-    e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const phone = form.phone.value;
-    const ageGroup = form.ageGroup.value;
-    const occupation = form.occupation.value;
-    const days = Array.from(form.elements["days"]).filter(d=>d.checked).map(d=>d.value);
-    const interest = Array.from(form.elements["interest"]).filter(i=>i.checked).map(i=>i.value);
-    const rsvp = {name,email,phone,ageGroup,occupation,days,interest,status:"Pending"};
-    
-    // Send Email
-    emailjs.send("service_n6q8s1o","_f4jj28d",{
-        from_name: name,
-        to_email: email,
-        message:`Dear ${name}, your RSVP for Econet e-Novate Expo 2025 is received.`
-    }).then(() => {
-        document.getElementById('signupMessage').innerText = "RSVP submitted! Redirecting...";
-        setTimeout(()=>{ window.location.href="speakers.html"; }, 3000);
-    }).catch(err=>{
-        document.getElementById('signupMessage').innerText = "Error sending email. Try again.";
-        console.error(err);
-    });
+let rsvps = [];
 
-    form.reset();
+document.getElementById('signupForm').addEventListener('submit', function(e){
+e.preventDefault();
+const form = e.target;
+const name = form.name.value;
+const email = form.email.value;
+const phone = form.phone.value;
+const ageGroup = form.ageGroup.value;
+const occupation = form.occupation.value;
+const days = Array.from(form.elements["days"]).filter(d=>d.checked).map(d=>d.value);
+const interest = Array.from(form.elements["interest"]).filter(i=>i.checked).map(i=>i.value);
+
+const rsvp = {name,email,phone,ageGroup,occupation,days,interest,status:"Pending"};
+rsvps.push(rsvp);
+
+// EmailJS send
+emailjs.send("_n6q8ss1o","_f4jj28d",{
+from_name:name,
+to_email:email,
+message:`Dear ${name}, your RSVP for Econet e-Novate Expo 2025 is received.`
+}).then(() => {
+document.getElementById('signupMessage').innerText = "RSVP submitted! Redirecting...";
+setTimeout(()=>{ window.location.href="speakers.html"; },2000); // auto-redirect after 2s
+}).catch(err => {
+document.getElementById('signupMessage').innerText = "Error sending email. Please try again.";
+console.error(err);
+});
+
+form.reset();
 });
 </script>
 </body>
