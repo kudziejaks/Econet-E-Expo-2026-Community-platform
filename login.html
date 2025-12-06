@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Econet E-Novate Expo 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function(){
+            emailjs.init("yOwYpcXjeLqxfopJb");
+        })();
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?ai,cybersecurity,tech') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: rgba(0,0,0,0.6);
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 400px;
+            margin: 150px auto;
+            background-color: rgba(0,0,0,0.6);
+            padding: 30px;
+            border-radius: 12px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 6px;
+            border: none;
+        }
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: #ff4c00;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff7333;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="community.html">Community</a>
+        <a href="profile.html">Innovators</a>
+        <a href="admin.html">Admin</a>
+        <a href="signup.html">Sign Up</a>
+    </nav>
+
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Placeholder for Node.js/EmailJS login
+            emailjs.send('service_n6q8s1o', 'template_f4jj28d', {
+                email: loginForm.email.value,
+                password: loginForm.password.value
+            })
+            .then(() => {
+                alert('Login request sent! Admin or system will verify.');
+                loginForm.reset();
+            }, (err) => {
+                alert('Oops! Something went wrong.');
+                console.error(err);
+            });
+        });
+    </script>
+</body>
+</html>
