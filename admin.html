@@ -1,69 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Econet E-Novate Expo 2025</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: url('https://source.unsplash.com/1600x900/?artificial-intelligence,technology') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
-        nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-            background-color: rgba(0,0,0,0.6);
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .container {
-            text-align: center;
-            margin-top: 150px;
-        }
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-        }
-        .btn {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            color: white;
-            background-color: #ff4c00;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-        }
-        .btn:hover {
-            background-color: #ff7333;
-        }
-    </style>
-</head>
-<body>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="community.html">Community</a>
-        <a href="profile.html">Innovators</a>
-        <a href="admin.html">Admin</a>
-        <a href="login.html">Login</a>
-    </nav>
+let posts = JSON.parse(localStorage.getItem('communityPosts')) || [];
+const adminPostsDiv = document.getElementById('admin-posts');
 
-    <div class="container">
-        <h1>Welcome to Econet E-Novate Expo 2025</h1>
-        <p>Future Ready Tech – S-Y-N-E-R-A-G-I-E-S</p>
-        <a href="signup.html" class="btn">Join Export</a>
-    </div>
-</body>
-</html>
+function renderPosts() {
+    adminPostsDiv.innerHTML = '';
+    posts.forEach((post, index) => {
+        const postEl = document.createElement('div');
+        postEl.className = 'feed';
+        postEl.innerHTML = `
+            <h4>${post.name} - ${post.project}</h4>
+            <p>${post.status}</p>
+            <p><strong>Open to Collaboration:</strong> ${post.collaboration}</p>
+            <button class='delete-btn' onclick='deletePost(${index})'>Delete</button>
+        `;
+        adminPostsDiv.appendChild(postEl);
+    });
+}
+
+function deletePost(index) {
+    posts.splice(index, 1); // Remove from array
+    localStorage.setItem('communityPosts', JSON.stringify(posts)); // Update localStorage
+    renderPosts(); // Refresh admin view
+}
+
+renderPosts();
