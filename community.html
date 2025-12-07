@@ -210,21 +210,42 @@
 
     function renderPosts() {
         postsDiv.innerHTML = '';
-        savedPosts.slice().reverse().forEach((postData, index) => { // latest first
+        savedPosts.slice().reverse().forEach((postData, index) => {
             const postEl = document.createElement('div');
             postEl.className = 'post';
+
             postEl.innerHTML = `
                 <h4>${postData.name} - ${postData.project}</h4>
                 <h5>Email: ${postData.email}</h5>
                 <p>${postData.status}</p>
                 <p><strong>Open to Collaboration:</strong> ${postData.collaboration}</p>
-                <div class="post-actions">
-                    ${postData.collaboration === 'Yes' 
-                        ? `<button class="chat-btn" onclick="window.location='mailto:${postData.email}?subject=Collaboration on ${encodeURIComponent(postData.project)}&body=Hi ${encodeURIComponent(postData.name)}, I saw your project on Econet E-Novate Expo Community and would like to collaborate.'">Chat Up</button>` 
-                        : ''}
-                    ${isAdmin ? `<button class="delete-btn" onclick="deletePost(${index})">Delete</button>` : ''}
-                </div>
+                <div class="post-actions"></div>
             `;
+
+            const actionsDiv = postEl.querySelector('.post-actions');
+
+            // Chat Up button
+            if (postData.collaboration === 'Yes') {
+                const chatBtn = document.createElement('button');
+                chatBtn.className = 'chat-btn';
+                chatBtn.textContent = 'Chat Up';
+                chatBtn.addEventListener('click', () => {
+                    const subject = `Collaboration on ${postData.project}`;
+                    const body = `Hi ${postData.name}, I saw your project on Econet E-Novate Expo Community and would like to collaborate.`;
+                    window.location.href = `mailto:${postData.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                });
+                actionsDiv.appendChild(chatBtn);
+            }
+
+            // Delete button if admin
+            if (isAdmin) {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.addEventListener('click', () => deletePost(index));
+                actionsDiv.appendChild(deleteBtn);
+            }
+
             postsDiv.appendChild(postEl);
         });
     }
@@ -242,14 +263,12 @@
             collaboration: form.collaboration.value
         };
 
-        // Save post in localStorage
         savedPosts.push(postData);
         localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
 
-        // Re-render posts
         renderPosts();
 
-        // Send via EmailJS
+        // EmailJS
         emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
         .then(() => console.log('Post submitted via EmailJS'))
         .catch(err => console.error('Error sending post', err));
@@ -260,7 +279,7 @@
     // Admin login
     adminBtn.addEventListener('click', () => {
         const password = adminPasswordInput.value;
-        if(password === 'admin123'){ // You can change this password
+        if(password === 'admin123'){ // change if needed
             isAdmin = true;
             renderPosts();
             alert('Admin mode activated! You can now delete posts.');
