@@ -1,35 +1,184 @@
-const form = document.getElementById('community-form');
-const postsDiv = document.getElementById('posts');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Econet E-Novate Expo 2025</title>
 
-form.addEventListener('submit', function(e){
-    e.preventDefault();
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    const postData = {
-        name: form.name.value,
-        email: form.email.value,
-        project: form.project.value,
-        status: form.status.value,
-        collaboration: form.collaboration.value
-    };
+    <!-- EmailJS -->
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("yOwYpcXjeLqxfopJb");
+        })();
+    </script>
 
-    // Display post on page with clickable email
-    const postEl = document.createElement('div');
-    postEl.className = 'post';
-    postEl.innerHTML = `
-        <h4>${postData.name} - ${postData.project}</h4>
-        <p>${postData.status}</p>
-        <p><strong>Open to Collaboration:</strong> ${postData.collaboration}</p>
-        <p><strong>Contact:</strong> <a href="mailto:${postData.email}">${postData.email}</a></p>
-    `;
-    postsDiv.prepend(postEl);
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: url('https://source.unsplash.com/1600x900/?ai,network,technology') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
 
-    // Send via EmailJS
-    emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
-    .then(() => {
-        console.log('Post submitted via EmailJS');
-    }, (err) => {
-        console.error('Error sending post', err);
-    });
+        nav {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background-color: rgba(0,0,0,0.6);
+        }
 
-    form.reset();
-});
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            background-color: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 12px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            margin-bottom: 10px;
+        }
+
+        form input, form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            border: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            background-color: #ff4c00;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff7333;
+        }
+
+        .post {
+            background-color: rgba(255,255,255,0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .post h4, .post h5 {
+            margin: 0;
+        }
+
+        .post p {
+            margin: 5px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV BAR -->
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="join.html">Join</a>
+        <a href="community.html">Community</a>
+        <a href="about.html">About</a>
+        <a href="updates.html">Updates</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="container">
+        <h2>Community Feed</h2>
+
+        <form id="community-form">
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <input type="text" id="project" name="project" placeholder="Project / Challenge" required>
+            <textarea id="status" name="status" placeholder="Progress / Hindrances" required></textarea>
+            <select id="collaboration" name="collaboration" required>
+                <option value="">Open to Collaboration?</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+            <button type="submit">Share</button>
+        </form>
+
+        <div id="posts"><!-- Posts will appear here --></div>
+    </div>
+
+    <script>
+        const form = document.getElementById('community-form');
+        const postsDiv = document.getElementById('posts');
+
+        // Load posts from localStorage on page load
+        let savedPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
+
+        function renderPosts() {
+            postsDiv.innerHTML = '';
+            savedPosts.slice().reverse().forEach(postData => { // latest first
+                const postEl = document.createElement('div');
+                postEl.className = 'post';
+                postEl.innerHTML = `
+                    <h4>${postData.name} - ${postData.project}</h4>
+                    <h5>Email: ${postData.email}</h5>
+                    <p>${postData.status}</p>
+                    <p><strong>Open to Collaboration:</strong> ${postData.collaboration}</p>
+                `;
+                postsDiv.appendChild(postEl);
+            });
+        }
+
+        renderPosts();
+
+        form.addEventListener('submit', function(e){
+            e.preventDefault();
+
+            const postData = {
+                name: form.name.value,
+                email: form.email.value,
+                project: form.project.value,
+                status: form.status.value,
+                collaboration: form.collaboration.value
+            };
+
+            // Save post in localStorage
+            savedPosts.push(postData);
+            localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
+
+            // Re-render posts
+            renderPosts();
+
+            // Send via EmailJS
+            emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
+            .then(() => console.log('Post submitted via EmailJS'))
+            .catch(err => console.error('Error sending post', err));
+
+            form.reset();
+        });
+    </script>
+
+</body>
+</html>
