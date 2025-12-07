@@ -1,184 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community - Econet E-Novate Expo 2025</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community - Econet E-Novate Expo 2025</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-    <!-- EmailJS -->
-    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-    <script>
-        (function() {
-            emailjs.init("yOwYpcXjeLqxfopJb");
-        })();
-    </script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function() {
+    emailjs.init("yOwYpcXjeLqxfopJb");
+})();
+</script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background: url('https://source.unsplash.com/1600x900/?ai,network,technology') no-repeat center center fixed;
-            background-size: cover;
-            color: white;
-        }
+<style>
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+        background: url('https://source.unsplash.com/1600x900/?blue,green,ai,technology') no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+    }
 
-        nav {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-            background-color: rgba(0,0,0,0.6);
-        }
+    nav {
+        display: flex;
+        justify-content: space-around;
+        padding: 20px;
+        background-color: rgba(0,0,0,0.6);
+    }
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-        }
+    nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
 
-        .container {
-            max-width: 800px;
-            margin: 100px auto;
-            background-color: rgba(0,0,0,0.7);
-            padding: 30px;
-            border-radius: 12px;
-        }
+    .container {
+        max-width: 900px;
+        margin: 80px auto;
+        background-color: rgba(0,0,0,0.7);
+        padding: 30px;
+        border-radius: 12px;
+    }
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-        form textarea {
-            width: 100%;
-            height: 80px;
-            padding: 10px;
-            border-radius: 6px;
-            border: none;
-            margin-bottom: 10px;
-        }
+    form textarea {
+        width: 100%;
+        height: 80px;
+        padding: 10px;
+        border-radius: 6px;
+        border: none;
+        margin-bottom: 10px;
+    }
 
-        form input, form select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border: none;
-        }
+    form input, form select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        border: none;
+    }
 
-        button {
-            width: 100%;
-            padding: 12px;
-            font-size: 1rem;
-            background-color: #ff4c00;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-        }
+    button {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        background-color: #ff4c00;
+        border: none;
+        border-radius: 8px;
+        color: white;
+        cursor: pointer;
+    }
 
-        button:hover {
-            background-color: #ff7333;
-        }
+    button:hover {
+        background-color: #ff7333;
+    }
 
-        .post {
-            background-color: rgba(255,255,255,0.1);
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 8px;
-        }
+    .post {
+        background-color: rgba(255,255,255,0.1);
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
 
-        .post h4, .post h5 {
-            margin: 0;
-        }
+    .post h4, .post h5 {
+        margin: 0;
+    }
 
-        .post p {
-            margin: 5px 0 0 0;
-        }
-    </style>
+    .post p {
+        margin: 5px 0 0 0;
+    }
+
+    .post-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+    }
+
+    .chat-btn, .delete-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+
+    .chat-btn {
+        background-color: #008cff;
+        color: white;
+    }
+
+    .chat-btn:hover {
+        background-color: #00aaff;
+    }
+
+    .delete-btn {
+        background-color: #ff3333;
+        color: white;
+    }
+
+    .delete-btn:hover {
+        background-color: #ff6666;
+    }
+
+    #admin-section {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    #admin-password {
+        width: 200px;
+        padding: 8px;
+        margin-right: 8px;
+        border-radius: 6px;
+        border: none;
+    }
+
+    #admin-login-btn {
+        padding: 8px 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        background-color: #00cc44;
+        color: white;
+    }
+
+    #admin-login-btn:hover {
+        background-color: #33dd66;
+    }
+</style>
 </head>
 <body>
 
-    <!-- NAV BAR -->
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="join.html">Join</a>
-        <a href="community.html">Community</a>
-        <a href="about.html">About</a>
-        <a href="updates.html">Updates</a>
-        <a href="contact.html">Contact</a>
-    </nav>
+<!-- NAV BAR -->
+<nav>
+    <a href="index.html">Home</a>
+    <a href="join.html">Join</a>
+    <a href="community.html">Community</a>
+    <a href="about.html">About</a>
+    <a href="updates.html">Updates</a>
+    <a href="contact.html">Contact</a>
+</nav>
 
-    <div class="container">
-        <h2>Community Feed</h2>
+<div class="container">
+    <h2>Community Feed</h2>
 
-        <form id="community-form">
-            <input type="text" id="name" name="name" placeholder="Your Name" required>
-            <input type="email" id="email" name="email" placeholder="Your Email" required>
-            <input type="text" id="project" name="project" placeholder="Project / Challenge" required>
-            <textarea id="status" name="status" placeholder="Progress / Hindrances" required></textarea>
-            <select id="collaboration" name="collaboration" required>
-                <option value="">Open to Collaboration?</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            <button type="submit">Share</button>
-        </form>
+    <form id="community-form">
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+        <input type="email" id="email" name="email" placeholder="Your Email" required>
+        <input type="text" id="project" name="project" placeholder="Project / Challenge" required>
+        <textarea id="status" name="status" placeholder="Progress / Hindrances" required></textarea>
+        <select id="collaboration" name="collaboration" required>
+            <option value="">Open to Collaboration?</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+        <button type="submit">Share</button>
+    </form>
 
-        <div id="posts"><!-- Posts will appear here --></div>
+    <div id="posts"><!-- Posts will appear here --></div>
+
+    <div id="admin-section">
+        <input type="password" id="admin-password" placeholder="Admin Password">
+        <button id="admin-login-btn">Admin Login</button>
     </div>
+</div>
 
-    <script>
-        const form = document.getElementById('community-form');
-        const postsDiv = document.getElementById('posts');
+<script>
+    const form = document.getElementById('community-form');
+    const postsDiv = document.getElementById('posts');
+    const adminBtn = document.getElementById('admin-login-btn');
+    const adminPasswordInput = document.getElementById('admin-password');
 
-        // Load posts from localStorage on page load
-        let savedPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
+    let isAdmin = false;
 
-        function renderPosts() {
-            postsDiv.innerHTML = '';
-            savedPosts.slice().reverse().forEach(postData => { // latest first
-                const postEl = document.createElement('div');
-                postEl.className = 'post';
-                postEl.innerHTML = `
-                    <h4>${postData.name} - ${postData.project}</h4>
-                    <h5>Email: ${postData.email}</h5>
-                    <p>${postData.status}</p>
-                    <p><strong>Open to Collaboration:</strong> ${postData.collaboration}</p>
-                `;
-                postsDiv.appendChild(postEl);
-            });
-        }
+    // Load posts from localStorage
+    let savedPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
 
+    function renderPosts() {
+        postsDiv.innerHTML = '';
+        savedPosts.slice().reverse().forEach((postData, index) => { // latest first
+            const postEl = document.createElement('div');
+            postEl.className = 'post';
+            postEl.innerHTML = `
+                <h4>${postData.name} - ${postData.project}</h4>
+                <h5>Email: ${postData.email}</h5>
+                <p>${postData.status}</p>
+                <p><strong>Open to Collaboration:</strong> ${postData.collaboration}</p>
+                <div class="post-actions">
+                    ${postData.collaboration === 'Yes' ? `<button class="chat-btn" onclick="window.location='mailto:${postData.email}'">Chat Up</button>` : ''}
+                    ${isAdmin ? `<button class="delete-btn" onclick="deletePost(${index})">Delete</button>` : ''}
+                </div>
+            `;
+            postsDiv.appendChild(postEl);
+        });
+    }
+
+    renderPosts();
+
+    form.addEventListener('submit', function(e){
+        e.preventDefault();
+
+        const postData = {
+            name: form.name.value,
+            email: form.email.value,
+            project: form.project.value,
+            status: form.status.value,
+            collaboration: form.collaboration.value
+        };
+
+        // Save post in localStorage
+        savedPosts.push(postData);
+        localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
+
+        // Re-render posts
         renderPosts();
 
-        form.addEventListener('submit', function(e){
-            e.preventDefault();
+        // Send via EmailJS
+        emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
+        .then(() => console.log('Post submitted via EmailJS'))
+        .catch(err => console.error('Error sending post', err));
 
-            const postData = {
-                name: form.name.value,
-                email: form.email.value,
-                project: form.project.value,
-                status: form.status.value,
-                collaboration: form.collaboration.value
-            };
+        form.reset();
+    });
 
-            // Save post in localStorage
-            savedPosts.push(postData);
-            localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
-
-            // Re-render posts
+    // Admin login
+    adminBtn.addEventListener('click', () => {
+        const password = adminPasswordInput.value;
+        if(password === 'admin123'){ // You can change this password
+            isAdmin = true;
             renderPosts();
+            alert('Admin mode activated! You can now delete posts.');
+            adminPasswordInput.value = '';
+        } else {
+            alert('Incorrect password!');
+        }
+    });
 
-            // Send via EmailJS
-            emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
-            .then(() => console.log('Post submitted via EmailJS'))
-            .catch(err => console.error('Error sending post', err));
-
-            form.reset();
-        });
-    </script>
+    // Delete post
+    function deletePost(index){
+        if(isAdmin){
+            savedPosts.splice(index, 1);
+            localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
+            renderPosts();
+        }
+    }
+</script>
 
 </body>
 </html>
