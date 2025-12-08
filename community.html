@@ -15,11 +15,14 @@
 })();
 </script>
 
+<!-- Firebase CDN -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <style>
     body {
         margin: 0;
         font-family: 'Roboto', sans-serif;
-        /* Blue and green gradient background */
         background: linear-gradient(135deg, #0072ff, #00ff88);
         color: white;
         min-height: 100vh;
@@ -44,6 +47,17 @@
         background-color: rgba(0,0,0,0.7);
         padding: 30px;
         border-radius: 12px;
+    }
+
+    #new-post-notification {
+        display:none;
+        background-color:#ffcc00;
+        color:black;
+        padding:10px;
+        text-align:center;
+        border-radius:6px;
+        margin-bottom:10px;
+        font-weight:bold;
     }
 
     h2 {
@@ -176,6 +190,9 @@
 <div class="container">
     <h2>Community Feed</h2>
 
+    <!-- Notification for new posts -->
+    <div id="new-post-notification">New post added!</div>
+
     <form id="community-form">
         <input type="text" id="name" name="name" placeholder="Your Name" required>
         <input type="email" id="email" name="email" placeholder="Your Email" required>
@@ -198,19 +215,36 @@
 </div>
 
 <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAl7IyJLWXHt7KVdZQv02bwG8a0cmtcfuk",
+      authDomain: "econet-expo.firebaseapp.com",
+      databaseURL: "https://econet-expo-default-rtdb.firebaseio.com",
+      projectId: "econet-expo",
+      storageBucket: "econet-expo.firebasestorage.app",
+      messagingSenderId: "408602920092",
+      appId: "1:408602920092:web:56176786341c3fa384d959",
+      measurementId: "G-4NESEY5D5P"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     const form = document.getElementById('community-form');
     const postsDiv = document.getElementById('posts');
     const adminBtn = document.getElementById('admin-login-btn');
     const adminPasswordInput = document.getElementById('admin-password');
+    const notificationDiv = document.getElementById('new-post-notification');
 
     let isAdmin = false;
+    let firstLoad = true; // Prevent notification on first load
 
-    // Load posts from localStorage
-    let savedPosts = JSON.parse(localStorage.getItem('communityPosts')) || [];
-
-    function renderPosts() {
+    function renderPosts(postsObj){
         postsDiv.innerHTML = '';
-        savedPosts.slice().reverse().forEach((postData, index) => {
+        const postsArray = Object.entries(postsObj || {}).reverse(); // newest first
+
+        postsArray.forEach(([key, postData]) => {
             const postEl = document.createElement('div');
             postEl.className = 'post';
 
@@ -224,8 +258,7 @@
 
             const actionsDiv = postEl.querySelector('.post-actions');
 
-            // Chat Up button
-            if (postData.collaboration === 'Yes') {
+            if(postData.collaboration === 'Yes'){
                 const chatBtn = document.createElement('button');
                 chatBtn.className = 'chat-btn';
                 chatBtn.textContent = 'Chat Up';
@@ -237,12 +270,13 @@
                 actionsDiv.appendChild(chatBtn);
             }
 
-            // Delete button if admin
-            if (isAdmin) {
+            if(isAdmin){
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = 'Delete';
-                deleteBtn.addEventListener('click', () => deletePost(index));
+                deleteBtn.addEventListener('click', () => {
+                    firebase.database().ref('communityPosts/' + key).remove();
+                });
                 actionsDiv.appendChild(deleteBtn);
             }
 
@@ -250,8 +284,26 @@
         });
     }
 
-    renderPosts();
+    // Listen for real-time updates
+    const postsRef = db.ref('communityPosts');
+    let previousKeys = [];
 
+    postsRef.on('value', snapshot => {
+        const posts = snapshot.val();
+        const currentKeys = Object.keys(posts || {});
+
+        // Show notification if a new post is added by someone else
+        if(!firstLoad && previousKeys.length < currentKeys.length){
+            notificationDiv.style.display = 'block';
+            setTimeout(() => notificationDiv.style.display = 'none', 3000); // hide after 3s
+        }
+
+        previousKeys = currentKeys;
+        renderPosts(posts);
+        firstLoad = false;
+    });
+
+    // Form submit
     form.addEventListener('submit', function(e){
         e.preventDefault();
 
@@ -263,15 +315,12 @@
             collaboration: form.collaboration.value
         };
 
-        savedPosts.push(postData);
-        localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
-
-        renderPosts();
+        postsRef.push(postData); // save to Firebase
 
         // EmailJS
         emailjs.send('service_n6q8s1o', 'template_f4jj28d', postData)
-        .then(() => console.log('Post submitted via EmailJS'))
-        .catch(err => console.error('Error sending post', err));
+            .then(() => console.log('Post submitted via EmailJS'))
+            .catch(err => console.error('Error sending post', err));
 
         form.reset();
     });
@@ -279,24 +328,15 @@
     // Admin login
     adminBtn.addEventListener('click', () => {
         const password = adminPasswordInput.value;
-        if(password === 'admin123'){ // change if needed
+        if(password === 'admin123'){
             isAdmin = true;
-            renderPosts();
             alert('Admin mode activated! You can now delete posts.');
             adminPasswordInput.value = '';
+            postsRef.once('value', snapshot => renderPosts(snapshot.val()));
         } else {
             alert('Incorrect password!');
         }
     });
-
-    // Delete post
-    function deletePost(index){
-        if(isAdmin){
-            savedPosts.splice(index, 1);
-            localStorage.setItem('communityPosts', JSON.stringify(savedPosts));
-            renderPosts();
-        }
-    }
 </script>
 
 </body>
