@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Innovator Pod — Profiles</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#ff6b35;--muted:#97a0b5;color-scheme:dark}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial;background:linear-gradient(180deg,#071026 0%, #0b1220 60%);color:#e6eef8;min-height:100vh;padding:36px}
+    .app{max-width:1100px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    header h1{font-size:1.4rem;margin:0}
+    header p{margin:0;color:var(--muted);font-size:0.95rem}
+
+    .controls{display:flex;gap:12px;align-items:center}
+    .btn{background:var(--accent);border:none;color:white;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    .avatar{width:64px;height:64px;border-radius:12px;background:linear-gradient(135deg,#334155,#1e293b);display:flex;align-items:center;justify-content:center;font-weight:700;color:#cfe8ff;font-size:1.1rem}
+    .profile-top{display:flex;gap:12px;align-items:center}
+    .name{font-weight:700;margin:0}
+    .role{color:var(--muted);font-size:0.85rem;margin-top:4px}
+    .bio{margin-top:10px;color:#dbeafc;font-size:0.95rem}
+
+    .tags{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-size:0.8rem;color:var(--muted)}
+
+    .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+    .small{font-size:0.85rem;color:var(--muted)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:linear-gradient(0deg,rgba(2,6,23,0.7),rgba(2,6,23,0.7));display:none;align-items:center;justify-content:center;padding:24px}
+    .modal{background:var(--card);padding:18px;border-radius:12px;width:100%;max-width:640px;border:1px solid rgba(255,255,255,0.03)}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input,textarea,select{width:100%;padding:10px;border-radius:8px;border:none;background:rgba(255,255,255,0.03);color:inherit}
+    textarea{min-height:90px;resize:vertical}
+
+    .search{padding:10px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:inherit}
+
+    @media (max-width:560px){.form-row{grid-template-columns:1fr}.avatar{width:56px;height:56px}}
+  </style>
+  <style>
+    body {
+      background-color: #000;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    .profile-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .profile-card img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid white;
+    }
+    .profile-card:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="bg-black text-white min-h-screen">
+  <div class="app">
+    <header>
+      <div>
+        <h1>Innovator Pod</h1>
+        <p>Profiles of creators, projects and collaboration status — everyone sees the pod.</p>
+      </div>
+      <div class="controls">
+        <input id="search" class="search" placeholder="Search name, skills or project" />
+        <button id="addBtn" class="btn">Add Profile</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="stats" style="margin-bottom:14px;color:var(--muted)"></section>
+      <section class="grid" id="profilesGrid"></section>
+    </main>
+  </div>
+
+  <!-- Modal for adding / editing profile -->
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <h3 id="modalTitle">Add New Innovator</h3>
+      <div style="height:10px"></div>
+      <div class="form-row">
+        <input id="inputName" class="input" placeholder="Full name" />
+        <input id="inputRole" class="input" placeholder="Role (e.g. Developer, Designer)" />
+      </div>
+      <div style="height:10px"></div>
+      <input id="inputProject" class="input" placeholder="Project / Challenge name" />
+      <div style="height:10px"></div>
+      <textarea id="inputBio" placeholder="Short bio or progress update"></textarea>
+      <div style="height:10px"></div>
+      <input id="inputSkills" class="input" placeholder="Skills or tags (comma separated)" />
+      <div style="height:12px"></div>
+      <label style="display:flex;gap:8px;align-items:center"><input id="inputCollab" type="checkbox" /> Open to collaboration</label>
+      <div style="height:14px"></div>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="cancelBtn" class="btn ghost">Cancel</button>
+        <button id="saveBtn" class="btn">Save Profile</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple client-side app — stores profiles in localStorage so you can test instantly.
+    // Later you can hook this to Firebase Realtime Database or Firestore.
+
+    const profilesGrid = document.getElementById('profilesGrid');
+    const stats = document.getElementById('stats');
+    const addBtn = document.getElementById('addBtn');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalTitle = document.getElementById('modalTitle');
+    const saveBtn = document.getElementById('saveBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const searchInput = document.getElementById('search');
+
+    // form fields
+    const inputName = document.getElementById('inputName');
+    const inputRole = document.getElementById('inputRole');
+    const inputProject = document.getElementById('inputProject');
+    const inputBio = document.getElementById('inputBio');
+    const inputSkills = document.getElementById('inputSkills');
+    const inputCollab = document.getElementById('inputCollab');
+
+    let editingId = null;
+
+    function uid(){return 'id-'+Math.random().toString(36).slice(2,9)}
+
+    function loadProfiles(){
+      try{
+        return JSON.parse(localStorage.getItem('innovatorProfiles') || '[]');
+      }catch(e){return []}
+    }
+
+    function saveProfiles(arr){
+      localStorage.setItem('innovatorProfiles', JSON.stringify(arr));
+    }
+
+    // seed some example profiles if empty
+    function seed(){
+      const p = loadProfiles();
+      if(p.length===0){
+        const examples = [
+          {id:uid(),name:'Tendai M.',role:'Product Designer',project:'EduConnect',bio:'Designing an app to connect tutors with students.',skills:['UI','UX','Figma'],collab:true,created:Date.now()},
+          {id:uid(),name:'Anesu C.',role:'Frontend Dev',project:'SolarPay',bio:'Building payment interface for pay-as-you-go solar systems.',skills:['JavaScript','React'],collab:false,created:Date.now()-1000*60*60},
+          {id:uid(),name:'Kudzai J.',role:'Data Analyst',project:'WasteMap',bio:'Mapping waste collection routes to optimise pickup.',skills:['Python','GIS'],collab:true,created:Date.now()-1000*60*60*2}
+        ];
+        saveProfiles(examples);
+      }
+    }
+
+    function render(profiles){
+      const q = searchInput.value.trim().toLowerCase();
+      const filtered = profiles.filter(p=>{
+        if(!q) return true;
+        return (p.name+p.role+(p.skills||[]).join(' ')+p.project+(p.bio||'')).toLowerCase().includes(q);
+      }).sort((a,b)=>b.created - a.created);
+
+      profilesGrid.innerHTML='';
+      filtered.forEach(p=>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `
+          <div class="profile-top">
+            <div class="avatar">${initials(p.name)}</div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+                <div>
+                  <p class="name">${escapeHtml(p.name)}</p>
+                  <div class="role">${escapeHtml(p.role)} • <span style="color:var(--muted)">${escapeHtml(p.project)}</span></div>
+                </div>
+                <div style="text-align:right">
+                  <div class="small">${new Date(p.created).toLocaleString()}</div>
+                  <div style="height:6px"></div>
+                  <div class="small">${p.collab? 'Open to collab' : 'Not seeking collab'}</div>
+                </div>
+              </div>
+              <div class="bio">${escapeHtml(p.bio||'')}</div>
+            </div>
+          </div>
+          <div class="tags">
+            ${(p.skills||[]).map(s=>`<span class="tag">${escapeHtml(s)}</span>`).join('')}
+          </div>
+          <div class="card-footer">
+            <div class="small">${p.skills? p.skills.length+' skills':''}</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn ghost" data-action="message" data-id="${p.id}">Message</button>
+              <button class="btn" data-action="edit" data-id="${p.id}">Edit</button>
+            </div>
+          </div>
+        `;
+
+        // events
+        el.querySelector('[data-action="message"]').addEventListener('click',()=>{
+          // open mailto or share link — here we open mailto placeholder
+          const subject = `Collaboration on ${p.project}`;
+          const body = `Hi ${p.name}, I saw your profile on Innovator Pod and would like to collaborate.`;
+          window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+
+        el.querySelector('[data-action="edit"]').addEventListener('click',()=> openEdit(p.id));
+
+        profilesGrid.appendChild(el);
+      });
+
+      stats.textContent = `${filtered.length} profile${filtered.length===1? '':'s'} • ${profiles.length} total saved`;
+    }
+
+    function escapeHtml(s){ if(!s) return ''; return String(s).replace(/[&<>\"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+    function initials(name){ if(!name) return 'I'; return name.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase(); }
+
+    // modal controls
+    addBtn.addEventListener('click',()=>{ openAdd(); });
+    cancelBtn.addEventListener('click',closeModal);
+    modalBackdrop.addEventListener('click', (e)=>{ if(e.target===modalBackdrop) closeModal(); });
+
+    function openAdd(){ editingId = null; modalTitle.textContent='Add New Innovator'; inputName.value=''; inputRole.value=''; inputProject.value=''; inputBio.value=''; inputSkills.value=''; inputCollab.checked=false; showModal(); }
+    function openEdit(id){ const profiles = loadProfiles(); const p = profiles.find(x=>x.id===id); if(!p) return; editingId = id; modalTitle.textContent='Edit Profile'; inputName.value=p.name; inputRole.value=p.role; inputProject.value=p.project; inputBio.value=p.bio||''; inputSkills.value=(p.skills||[]).join(', '); inputCollab.checked=!!p.collab; showModal(); }
+
+    function showModal(){ modalBackdrop.style.display='flex'; setTimeout(()=> modalBackdrop.querySelector('.modal').focus(),50); }
+    function closeModal(){ modalBackdrop.style.display='none'; }
+
+    saveBtn.addEventListener('click',()=>{
+      const name = inputName.value.trim();
+      if(!name){ alert('Please add a name'); return; }
+      const role = inputRole.value.trim();
+      const project = inputProject.value.trim();
+      const bio = inputBio.value.trim();
+      const skills = inputSkills.value.split(',').map(s=>s.trim()).filter(Boolean);
+      const collab = inputCollab.checked;
+
+      const profiles = loadProfiles();
+      if(editingId){
+        const idx = profiles.findIndex(p=>p.id===editingId);
+        if(idx>-1){ profiles[idx] = {...profiles[idx],name,role,project,bio,skills,collab}; }
+      } else {
+        profiles.push({id:uid(),name,role,project,bio,skills,collab,created:Date.now()});
+      }
+      saveProfiles(profiles);
+      render(profiles);
+      closeModal();
+    });
+
+    // search
+    searchInput.addEventListener('input',()=> render(loadProfiles()));
+
+    // init
+    seed();
+    render(loadProfiles());
+
+    // Optional: Example of how to hook to Firebase Realtime Database (compat version)
+    // 1) Add firebase scripts to <head> and initialize with your config
+    // 2) Replace localStorage save/load with reading/writing to db.ref('innovators')
+    /*
+    // Example snippet:
+    // const firebaseConfig = { /* your config * / };
+    // firebase.initializeApp(firebaseConfig);
+    // const db = firebase.database();
+    // function loadProfiles(){ return db.ref('innovators').once('value').then(s=> s.val() ? Object.values(s.val()) : []); }
+    // function saveProfilesToFirebase(profiles){ // push/update etc }
+    */
+
+  </script>
+  <!-- Firebase Setup -->
+  <script type="module">
+    // TODO: Replace with your Firebase config
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "YOUR_DATABASE_URL",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+
+    // Handle profile creation
+    document.getElementById('saveBtn').addEventListener('click', async () => {
+      const name = document.getElementById('nameInput').value;
+      const role = document.getElementById('roleInput').value;
+      const bio = document.getElementById('bioInput').value;
+      const file = document.getElementById('imageInput').files[0];
+
+      let imageUrl = "";
+
+      if (file) {
+        const storageRef = storage.ref('innovators/' + file.name);
+        await storageRef.put(file);
+        imageUrl = await storageRef.getDownloadURL();
+      }
+
+      const newPostRef = db.ref('innovators').push();
+      await newPostRef.set({
+        name: name,
+        role: role,
+        bio: bio,
+        image: imageUrl
+      });
+
+      alert("Saved to Firebase!");
+      // Display newly added profile immediately without reload
+      const card = document.createElement('div');
+      card.className = 'profile-card';
+      card.innerHTML = `
+        <img src="${imageUrl || 'https://via.placeholder.com/90'}" />
+        <h3>${name}</h3>
+        <p>${role}</p>
+        <small>${bio}</small>
+      `;
+      document.getElementById('profilesContainer').appendChild(card);();
+    });
+  </script>
+  <!-- Detailed View Modal -->
+  <div id="detailModal" class="fixed inset-0 bg-black/80 hidden items-center justify-center p-4">
+    <div class="bg-white text-black rounded-2xl p-6 w-full max-w-md">
+      <img id="detailImage" class="w-32 h-32 rounded-full mx-auto border-4 border-black object-cover" />
+      <h2 id="detailName" class="text-2xl font-bold text-center mt-4"></h2>
+      <p id="detailRole" class="text-center text-gray-700"></p>
+      <p id="detailBio" class="mt-4 text-gray-800 text-sm"></p>
+
+      <div class="flex justify-between mt-6">
+        <button id="editBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg">Edit</button>
+        <button id="deleteBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg">Delete</button>
+        <button id="closeDetail" class="px-4 py-2 bg-gray-700 text-white rounded-lg">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const profilesContainer = document.getElementById('profilesContainer');
+    const detailModal = document.getElementById('detailModal');
+    const closeDetail = document.getElementById('closeDetail');
+
+    // Firebase load profiles
+    db.ref('innovators').on('value', snapshot => {
+      profilesContainer.innerHTML = '';
+      snapshot.forEach(child => {
+        const data = child.val();
+        const id = child.key;
+        const card = document.createElement('div');
+        card.className = 'profile-card cursor-pointer';
+        card.innerHTML = `
+          <img src="${data.image || 'https://via.placeholder.com/90'}" />
+          <h3>${data.name}</h3>
+          <p>${data.role}</p>
+        `;
+        card.onclick = () => openDetail(id, data);
+        profilesContainer.appendChild(card);
+      });
+    });
+
+    function openDetail(id, data) {
+      detailModal.classList.remove('hidden');
+      document.getElementById('detailImage').src = data.image;
+      document.getElementById('detailName').textContent = data.name;
+      document.getElementById('detailRole').textContent = data.role;
+      document.getElementById('detailBio').textContent = data.bio;
+
+      document.getElementById('editBtn').onclick = () => editProfile(id, data);
+      document.getElementById('deleteBtn').onclick = () => deleteProfile(id);
+    }
+
+    closeDetail.onclick = () => detailModal.classList.add('hidden');
+
+    // Delete from Firebase
+    function deleteProfile(id) {
+      if (!confirm('Delete this profile?')) return;
+      db.ref('innovators/' + id).remove();
+      alert('Profile deleted');
+      detailModal.classList.add('hidden');
+    }
+
+    // Edit function
+    function editProfile(id, data) {
+      detailModal.classList.add('hidden');
+      document.getElementById('nameInput').value = data.name;
+      document.getElementById('roleInput').value = data.role;
+      document.getElementById('bioInput').value = data.bio;
+
+      document.getElementById('saveBtn').onclick = async () => {
+        const updated = {
+          name: document.getElementById('nameInput').value,
+          role: document.getElementById('roleInput').value,
+          bio: document.getElementById('bioInput').value,
+        };
+
+        const file = document.getElementById('imageInput').files[0];
+        if (file) {
+          const storageRef = storage.ref('innovators/' + file.name);
+          await storageRef.put(file);
+          updated.image = await storageRef.getDownloadURL();
+        } else {
+          updated.image = data.image;
+        }
+
+        await db.ref('innovators/' + id).update(updated);
+        alert('Profile updated!');
+        location.reload();
+      };
+    }
+  </script>
+</body>
+</html>
